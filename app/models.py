@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 class User(db.Model):
     id =  db.Column(db.Integer, primary_key=True)
@@ -8,4 +9,5 @@ class User(db.Model):
 class Course(db.model):
     id = db.column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
+
     
