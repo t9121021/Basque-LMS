@@ -1,10 +1,6 @@
 from app import db
-<<<<<<< HEAD
-from datetime import datetime
-=======
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
->>>>>>> a35faf2204c99246513cf9499fe3e334e4f456a7
 
 db = SQLAlchemy()
 
