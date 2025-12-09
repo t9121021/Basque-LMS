@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, redirect, url_for, flash, request
-from app.forms import AnnouncementForm
+from app.forms import AnnouncementForm, AssignmentForm
 from flask_login import current_user, login_required
-from app.models import Announcement, Submission, db
+from app.models import Announcement, Submission, Assignment, db
 
 instructor = Blueprint('instructor', __name__, template_folder='templates')
 
@@ -35,4 +35,23 @@ def grade(submission_id):
         return redirect("/instructor/submissions")
 
     return render_template("grade.html", submission=submission)
+
+@instructor.route('/assignment/create', methods=['GET', 'POST'])
+
+def create_assignment():
+
+
+    form = AssignmentForm()
+
+    if form.validate_on_submit():
+        assignment = Assignment(
+            title=form.title.data,
+            due_date=form.due_date.data
+        )
+        db.session.add(assignment)
+        db.session.commit()
+        flash("Assignment created successfully!", "success")
+        return redirect(url_for("instructor.instructor_home"))
+
+    return render_template("instructor/instructor_createassignment.html", form=form)
 
