@@ -22,6 +22,10 @@ def login_post():
 
     flash('Invalid form data', 'danger')
     return redirect(url_for('auth.login'))
-            
+    
+@auth.route('/logout')
+def logout():
+     flash('Not implemented', 'info')
+     return redirect(url_for('auth.login'))
 
 
