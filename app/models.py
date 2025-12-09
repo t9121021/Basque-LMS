@@ -7,9 +7,9 @@ db = SQLAlchemy()
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True)
-    password = db.Column(db.String(200))
-    role = db.Column(db.String(20)) 
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    role = db.Column(db.String(20), nullable=False) 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
@@ -20,21 +20,15 @@ class Announcement(db.Model):
     message = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-class Submission(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
-    student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    text = db.Column(db.Text)
-    file_path = db.Column(db.String(255))
-    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    student = db.relationship('User')
-    assignment = db.relationship('Assignment')
-    
 class Assignment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128), nullable=False)
-    description = db.Column(db.Text)
+    title = db.Column(db.String(200))
     due_date = db.Column(db.DateTime)
 
-    
+
+class Submission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
+    content = db.Column(db.Text)
+    grade = db.Column(db.Integer, nullable=True)
