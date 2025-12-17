@@ -7,10 +7,19 @@ Basque - LMS for Instructors
 {% block content %}
     <h1>Welcome, Professor {{ current_user.username }}</h1>
     
-    <a href="/instructor/announcement/create">
-    <button>Create Announcement</button> <br/>
-    </a>
-    <a href="/instructor/assignment/create">
-    <button>Create Assignment</button>
-    </a>
+    <div style="margin-top: 20px;">
+        <h3>Quick Actions</h3>
+        <a href="{{ url_for('instructor.create_announcement') }}">
+            <button style="padding: 10px 20px; margin: 5px;">Create Announcement</button>
+        </a>
+        <a href="{{ url_for('instructor.create_assignment') }}">
+            <button style="padding: 10px 20px; margin: 5px;">Create Assignment</button>
+        </a>
+        <a href="{{ url_for('instructor.list_assignments') }}">
+            <button style="padding: 10px 20px; margin: 5px;">View Assignments</button>
+        </a>
+        <a href="{{ url_for('instructor.list_submissions') }}">
+            <button style="padding: 10px 20px; margin: 5px; background-color: #007bff; color: white; border: none;">Grade Submissions</button>
+        </a>
+    </div>
 {% endblock %}
