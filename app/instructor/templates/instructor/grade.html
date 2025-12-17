@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Grade Submission - Basque LMS{% endblock %}
+
+{% block content %}
+<h1>Grade Submission</h1>
+
+<div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
+    <h3>Submission Details</h3>
+    <p><strong>Assignment:</strong> {{ submission.assignment.title if submission.assignment else 'N/A' }}</p>
+    <p><strong>Student ID:</strong> {{ submission.student_id }}</p>
+    <p><strong>Current Grade:</strong> 
+        {% if submission.grade is not none %}
+            {{ submission.grade }}/100
+        {% else %}
+            Not graded yet
+        {% endif %}
+    </p>
+</div>
+
+<div style="background-color: #e9ecef; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
+    <h3>Submission Content</h3>
+    <pre style="white-space: pre-wrap; word-wrap: break-word; background: white; padding: 15px; border-radius: 5px;">{{ submission.text or 'No text content submitted.' }}</pre>
+</div>
+
+<form method="post">
+    <div style="margin-bottom: 15px;">
+        <label for="grade"><strong>Grade (0-100):</strong></label><br>
+        <input type="number" name="grade" id="grade" min="0" max="100" 
+               value="{{ submission.grade if submission.grade is not none else '' }}"
+               style="padding: 8px; width: 100px; font-size: 16px;" required>
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label for="feedback"><strong>Feedback (optional):</strong></label><br>
+        <textarea name="feedback" id="feedback" rows="5" 
+                  style="width: 100%; max-width: 600px; padding: 10px;">{{ submission.feedback or '' }}</textarea>
+    </div>
+    
+    <button type="submit" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Save Grade
+    </button>
+    <a href="{{ url_for('instructor.list_submissions') }}" style="margin-left: 15px;">Cancel</a>
+</form>
+{% endblock %}
