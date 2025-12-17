@@ -5,8 +5,8 @@ Basque - LMS for Instructors
 {% endblock %}
 
 {% block content %}
-    <h1>Welcome, Professor {{ current_user.username }}</h1>
-    
+    <h1>Welcome, {% if current_user.role == 'ta' %}TA{% else %}Professor{% endif %} {{ current_user.username }}</h1>
+
     <div style="margin-top: 20px;">
         <h3>Quick Actions</h3>
         <a href="{{ url_for('instructor.create_announcement') }}">
@@ -21,5 +21,61 @@ Basque - LMS for Instructors
         <a href="{{ url_for('instructor.list_submissions') }}">
             <button style="padding: 10px 20px; margin: 5px; background-color: #007bff; color: white; border: none;">Grade Submissions</button>
         </a>
+            </div>
+
+    <div style="margin-top: 30px;">
+        <h3>Recent Announcements</h3>
+        {% if announcements %}
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">Title</th>
+                    <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">Message</th>
+                    <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for announcement in announcements %}
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #dee2e6;">{{ announcement.title }}</td>
+                    <td style="padding: 10px; border: 1px solid #dee2e6;">{{ announcement.message[:100] }}{% if announcement.message|length > 100 %}...{% endif %}</td>
+                    <td style="padding: 10px; border: 1px solid #dee2e6;">{{ announcement.created_at.strftime('%B %d, %Y') if announcement.created_at else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No announcements yet.</p>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 30px;">
+        <h3>All Assignments</h3>
+        {% if assignments %}
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">Title</th>
+                    <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">Due Date</th>
+                    <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">Submissions</th>
+                    <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in assignments %}
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #dee2e6;">{{ assignment.title }}</td>
+                    <td style="padding: 10px; border: 1px solid #dee2e6;">{{ assignment.due_date.strftime('%B %d, %Y at %I:%M %p') if assignment.due_date else 'No due date' }}</td>
+                    <td style="padding: 10px; border: 1px solid #dee2e6;">{{ assignment.submissions|length }} submission(s)</td>
+                    <td style="padding: 10px; border: 1px solid #dee2e6;">
+                        <a href="{{ url_for('instructor.edit_assignment', assignment_id=assignment.id) }}">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No assignments yet.</p>
+        {% endif %}
     </div>
 {% endblock %}
