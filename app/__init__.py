@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from app.student.routes import student
 
 from .config import Config
 db = SQLAlchemy()
@@ -19,11 +20,13 @@ def create_app():
 
     from app.main.routes import main
     from app.auth.routes import auth
-    from app.instructor.routes import instructor  
+    from app.instructor.routes import instructor 
+
 
     app.register_blueprint(main)
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(instructor, url_prefix="/instructor")  
+    app.register_blueprint(student, url_prefix="/student")
 
     with app.app_context():
         db.create_all()
