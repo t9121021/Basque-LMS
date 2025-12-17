@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}All Submissions - Basque LMS{% endblock %}
+
+{% block content %}
+<h1>Student Submissions</h1>
+<p>View and grade student submissions below.</p>
+
+{% if submissions %}
+<table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+        <tr style="background-color: #343a40; color: white;">
+            <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">ID</th>
+            <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Assignment</th>
+            <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Student</th>
+            <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Content Preview</th>
+            <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Current Grade</th>
+            <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for submission in submissions %}
+        <tr>
+            <td style="padding: 10px; border: 1px solid #dee2e6;">{{ submission.id }}</td>
+            <td style="padding: 10px; border: 1px solid #dee2e6;">{{ submission.assignment.title if submission.assignment else 'N/A' }}</td>
+            <td style="padding: 10px; border: 1px solid #dee2e6;">Student #{{ submission.student_id }}</td>
+            <td style="padding: 10px; border: 1px solid #dee2e6;">
+                {% if submission.text %}
+                    {{ submission.text[:50] }}{% if submission.text|length > 50 %}...{% endif %}
+                {% else %}
+                    <em>No text content</em>
+                {% endif %}
+            </td>
+            <td style="padding: 10px; border: 1px solid #dee2e6;">
+                {% if submission.grade is not none %}
+                    <strong>{{ submission.grade }}/100</strong>
+                {% else %}
+                    <span style="color: orange;">Not graded</span>
+                {% endif %}
+            </td>
+            <td style="padding: 10px; border: 1px solid #dee2e6;">
+                <a href="{{ url_for('instructor.grade', submission_id=submission.id) }}" style="margin-right: 10px;">Grade</a>
+                <a href="{{ url_for('instructor.give_feedback', submission_id=submission.id) }}">Feedback</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No submissions have been made yet.</p>
+{% endif %}
+
+<p style="margin-top: 20px;">
+    <a href="{{ url_for('instructor.instructor_home') }}">Back to Dashboard</a>
+</p>
+{% endblock %}
