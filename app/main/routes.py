@@ -6,6 +6,11 @@ main = Blueprint('main', __name__, template_folder='templates')
 
 @main.route('/')
 def index():
+    if current_user.is_authenticated:
+        if current_user.role in ['teacher', 'ta', 'instructor']:
+            return redirect(url_for('instructor.instructor_home'))
+        elif current_user.role == 'student':
+            return redirect(url_for('student.student_home'))
     return render_template('main/index.html')
 
 @main.route('/feature')
