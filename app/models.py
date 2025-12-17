@@ -30,6 +30,8 @@ class Submission(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
     content = db.Column(db.Text)
+    text = db.Column(db.Text)
+    file_path = db.Column(db.String(500), nullable=True)
     grade = db.Column(db.Integer, nullable=True)
     feedback = db.Column(db.Text, nullable=True)
 
