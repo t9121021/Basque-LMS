@@ -20,7 +20,9 @@ python run.py
 
 Roles:
 Ting Lun Ho - Instructor grading, login/logout, student reminders
+
 Thanh Vo - Student view grades, instructor feedback, instructor delete/edit assignments
+
 Sebastian Ezpeleta-Stewart - Student submit assignment, instructor create assignment, instructor create announcement
 
 ![alt text](<Screenshot 2025-11-16 at 3.31.30 PM.png>)

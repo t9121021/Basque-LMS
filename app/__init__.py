@@ -2,9 +2,10 @@ import os
 
 from flask import Flask
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
 from .config import Config
-from .models import db
+db = SQLAlchemy()
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -28,3 +29,4 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+    return app
