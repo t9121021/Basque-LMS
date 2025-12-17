@@ -21,8 +21,19 @@ def login_post():
     form = LoginForm()
 
     if form.validate_on_submit():
-        flash('Not implemented', 'info')
-        return redirect(url_for('auth.login'))
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            flash('Login successful!', 'success')
+            if user.role == 'teacher':
+                return redirect(url_for('instructor.instructor_home'))
+            elif user.role == 'student':
+                return redirect(url_for('student.student_home'))
+            else:
+                return redirect(url_for('main.index'))
+        else:
+            flash('Invalid username or password', 'danger')
+            return redirect(url_for('auth.login'))
 
     flash('Invalid form data', 'danger')
     return redirect(url_for('auth.login'))
@@ -49,8 +60,11 @@ def register():
     return render_template('auth/register.html', form=form)
     
 @auth.route('/logout')
+
+@login_required
 def logout():
-     flash('Not implemented', 'info')
-     return redirect(url_for('auth.login'))
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('auth.login'))
 
 
